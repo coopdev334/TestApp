@@ -10,7 +10,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.testapp.databinding.ActivityMainBinding
 import com.google.android.material.snackbar.Snackbar
 
-const val COMPILE_TIME_CONSTANT: String = "Matt PR change based on comments"
+const val COMPILE_TIME_CONSTANT: String = "Mike TestApp2 change 1"
 
 class MainActivity : AppCompatActivity() {
     private lateinit var viewBinding: ActivityMainBinding  // Use view binding to access views
