@@ -1,6 +1,7 @@
 package com.example.testapp
 
 import android.content.Intent
+import android.content.IntentFilter
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -15,6 +16,7 @@ const val COMPILE_TIME_CONSTANT: String = "Mike TestApp2 Coroutines"
 
 class MainActivity : AppCompatActivity() {
     private lateinit var viewBinding: ActivityMainBinding  // Use view binding to access views
+    private lateinit var broadcastRec : AirplaneBroadCastReceiver
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -158,6 +160,14 @@ class MainActivity : AppCompatActivity() {
             asyncCall2.await() // wait here for async call to finish
 
         }
+
+        // Create AirplaneBroadcastReceiver class object in var
+        broadcastRec = AirplaneBroadCastReceiver()
+
+        // Create IntentFilter to register what intent is to be received by this app
+        IntentFilter(Intent.ACTION_AIRPLANE_MODE_CHANGED).also {
+            registerReceiver(broadcastRec, it)
+        }
         Log.d("MainActivityTestApp", "onCreate: exited")
     }
 
@@ -170,6 +180,11 @@ class MainActivity : AppCompatActivity() {
     suspend fun ExampleSuspendFunc(): String {
         delay(3000L) // simulate some lengthy function call such as network call.
         return "Retuned from suspend function"
+    }
+
+    override fun onStop() {
+        super.onStop()
+        unregisterReceiver(broadcastRec) // unregister to avoid memory leaks if MainActivity context is stopped
     }
 
 
